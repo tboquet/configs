@@ -17,20 +17,24 @@
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     gnus
-     auctex
-     auto-completion
+     ;; auto-completion
+     latex
      ;; better-defaults
      python
      emacs-lisp
      git
      markdown
      org
+     ess
      (shell :variables
-            shell-default-height 30
-            shell-default-position 'bottom)
+             shell-default-height 30
+             shell-default-position 'bottom)
      syntax-checking
      version-control
+     (auto-completion :variables
+                       auto-completion-enable-help-tooltip t
+                       auto-completion-enable-sort-by-usage t
+                       auto-completion-enable-snippets-in-popup t)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -134,7 +138,7 @@ before layers configuration."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'.
-   dotspacemacs-inactive-transparency 90
+   dotspacemacs-inactive-transparency 70
    ;; If non nil unicode symbols are displayed in the mode line.
    dotspacemacs-mode-line-unicode-symbols t
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
@@ -163,62 +167,12 @@ before layers configuration."
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
-  ;; Org mode settings
-  (setq org-directory "~/Dropbox/org/")
-  (setq org-agenda-files (list "~/Dropbox/org/formation.org"
-                               "~/Dropbox/org/work.org"
-                               "~/Dropbox/org/research.org"
-                               ))
-
-
-  ;; Get email, and store in nnml
-  (setq gnus-secondary-select-methods
-        '(
-          (nnimap "gmail"
-                  (nnimap-address
-                   "imap.gmail.com")
-                  (nnimap-server-port 993)
-                  (nnimap-stream ssl))
-          ))
-
-  ;; Send email via Gmail:
-  (setq message-send-mail-function 'smtpmail-send-it
-        smtpmail-default-smtp-server "smtp.gmail.com")
-
-  ;; Archive outgoing email in Sent folder on imap.gmail.com:
-  (setq gnus-message-archive-method '(nnimap "imap.gmail.com")
-        gnus-message-archive-group "[Gmail]/Sent Mail")
-
-  ;; set return email address based on incoming email address
-  (setq gnus-posting-styles
-        '(((header "to" "tom.boquet@gmail.com")
-           (address "tom.boquet@gmail.com"))))
-
-  ;; store email in ~/gmail directory
-  (setq nnml-directory "~/gmail")
-  (setq message-directory "~/gmail")
-)
+  (global-linum-mode)
+  (golden-ratio-mode)
+  (setq powerline-default-separator 'arrow)
+  (set-fill-column 80)
+  (auto-fill-mode t)
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ahs-case-fold-search nil)
- '(ahs-default-range (quote ahs-range-whole-buffer))
- '(ahs-idle-interval 0.25)
- '(ahs-idle-timer 0 t)
- '(ahs-inhibit-face-list nil)
- '(package-selected-packages
-   (quote
-    (toc-org smeargle org-repo-todo org-present org-pomodoro org-bullets mmm-mode markdown-toc magit htmlize helm-gitignore gitconfig-mode gitattributes-mode git-timemachine git-messenger evil-org request gitignore-mode magit-popup git-commit with-editor markdown-mode alert log4e gntp shell-pop multi-term helm-flyspell flycheck-pos-tip flycheck helm-c-yasnippet company-statistics company-quickhelp company-anaconda auto-yasnippet ac-ispell auto-complete company yasnippet pyvenv pytest pyenv-mode pony-mode pip-requirements macrostep hy-mode helm-pydoc elisp-slime-nav diff-hl cython-mode anaconda-mode f json-rpc window-numbering volatile-highlights vi-tilde-fringe smooth-scrolling rfringe rainbow-delimiters powerline popup pcre2el paradox page-break-lines open-junk-file neotree move-text linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete hl-anything highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-descbinds helm-ag guide-key-tip google-translate golden-ratio gh-md fringe-helper flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-terminal-cursor-changer evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-jumper evil-indent-textobject evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu clean-aindent-mode buffer-move auto-highlight-symbol auto-dictionary aggressive-indent adaptive-wrap ace-window ace-link ace-jump-mode avy names anzu iedit smartparens highlight flx pos-tip guide-key s popwin projectile helm helm-core async parent-mode spinner pkg-info epl evil-leader evil use-package bind-key dash)))
- '(ring-bell-function (quote ignore)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
