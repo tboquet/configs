@@ -25,7 +25,9 @@
      git
      markdown
      org
+     ;; org :variables org-enable-reveal-js-support t
      ess
+     docker
      (shell :variables
              shell-default-height 30
              shell-default-position 'bottom)
@@ -168,45 +170,39 @@ before layers configuration."
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
    ;; Org mode settings
-  (setq org-directory "~/Dropbox/org/")
-  (setq org-agenda-files (list "~/Dropbox/org/formation.org"
-                               "~/Dropbox/org/work.org"
-                               "~/Dropbox/org/research.org"
-                               ))
+  ;; (setq org-directory "~/Dropbox/org/")
+  ;; (setq org-agenda-files (list "~/Dropbox/org/formation.org"
+  ;;                              "~/Dropbox/org/work.org"
+  ;;                              "~/Dropbox/org/work_element_ai.org"
+  ;;                              "~/Dropbox/org/research.org"
+  ;;                              ))
 
-
-  ;; Get email, and store in nnml
-  (setq gnus-secondary-select-methods
-        '(
-          (nnimap "gmail"
-                  (nnimap-address
-                   "imap.gmail.com")
-                  (nnimap-server-port 993)
-                  (nnimap-stream ssl))
-          ))
-
-  ;; Send email via Gmail:
-  (setq message-send-mail-function 'smtpmail-send-it
-        smtpmail-default-smtp-server "smtp.gmail.com")
-
-  ;; Archive outgoing email in Sent folder on imap.gmail.com:
-  (setq gnus-message-archive-method '(nnimap "imap.gmail.com")
-        gnus-message-archive-group "[Gmail]/Sent Mail")
-
-  ;; set return email address based on incoming email address
-  (setq gnus-posting-styles
-        '(((header "to" "tom.boquet@gmail.com")
-           (address "tom.boquet@gmail.com"))))
-
-  ;; store email in ~/gmail directory
-  (setq nnml-directory "~/gmail")
-  (setq message-directory "~/gmail")
   (global-linum-mode)
   (golden-ratio-mode)
   (setq powerline-default-separator 'arrow)
   (set-fill-column 80)
   (auto-fill-mode t)
+  (with-eval-after-load 'org (
+                              (setq org-agenda-files
+                                    "Users/thomasboquet/Dropbox/org/"
+                                          )))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-agenda-files (list org-directory))
+ '(org-directory "~/Dropbox/org/")
+ '(package-selected-packages
+   (quote
+    (dockerfile-mode docker json-mode tablist docker-tramp json-snatcher json-reformat yapfify xterm-color smeargle shell-pop pyvenv pytest pyenv-mode py-isort pip-requirements orgit org-projectile org-present org org-pomodoro alert log4e gntp org-download multi-term mmm-mode markdown-toc markdown-mode magit-gitflow live-py-mode hy-mode htmlize helm-pydoc helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md flycheck-pos-tip flycheck evil-magit magit magit-popup git-commit with-editor ess-smart-equals ess-R-object-popup ess-R-data-view ctable ess julia-mode eshell-z eshell-prompt-extras esh-help diff-hl cython-mode company-statistics company-quickhelp pos-tip company-auctex company-anaconda company auto-yasnippet yasnippet auctex anaconda-mode pythonic ac-ispell auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline restart-emacs request rainbow-delimiters quelpa popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
