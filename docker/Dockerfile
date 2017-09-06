@@ -22,7 +22,8 @@ RUN apt-get install -y curl grep sed dpkg && \
 RUN apt-add-repository ppa:adrozdoff/emacs && \
     apt-get update && apt-get install -y emacs25 zsh
 
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
+# RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 RUN git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 
