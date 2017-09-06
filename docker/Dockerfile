@@ -28,6 +28,7 @@ RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -
 RUN git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 
 RUN git clone https://github.com/tboquet/configs.git && \
+    cd configs && \
     cp .spacemacs ~/.spacemacs && \
     cp .zshrc ~/.zshrc
 
