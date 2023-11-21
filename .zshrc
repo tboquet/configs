@@ -82,3 +82,12 @@ export SSH_KEY_PATH="~/.ssh/"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# source .bashrc
+if [ -r ~/.bashrc ]; then
+    source ~/.bashrc
+fi
+
+autoload -Uz compinit
+zstyle ':completion:*' menu select
+fpath+=~/.zfunc
