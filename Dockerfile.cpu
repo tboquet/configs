@@ -1,0 +1,113 @@
+# Dockerfile for Spacemacs development environment with X11 forwarding
+
+# First stage: Build Emacs from source
+# FROM ubuntu:latest as emacs-builder
+
+# # Set non-interactive frontend
+# ENV DEBIAN_FRONTEND noninteractive
+
+# # Install build dependencies
+# RUN apt update && apt install -y \
+#       build-essential \
+#       automake \
+#       autoconf \
+#       libtool \
+#       texinfo \
+#       libx11-dev \
+#       libxpm-dev \
+#       libjpeg-dev \
+#       libpng-dev \
+#       libgif-dev \
+#       libtiff-dev \
+#       libgtk2.0-dev \
+#       libncurses-dev \
+#       libgnutls28-dev \
+#       wget
+
+# # Download Emacs source code
+# RUN wget https://ftp.gnu.org/gnu/emacs/emacs-27.2.tar.gz
+
+# # Extract Emacs source code
+# RUN tar -xzvf emacs-27.2.tar.gz
+
+# # Compile Emacs
+# WORKDIR /emacs-27.2
+# RUN ./configure
+# RUN make
+# RUN make install
+
+# Second stage: Create the final image
+FROM ubuntu:latest as development
+
+# Copy Emacs binaries from the builder stage
+# COPY --from=emacs-builder /usr/local /usr/local
+
+
+# Set non-interactive frontend
+ENV DEBIAN_FRONTEND noninteractive
+
+# Install necessary packages
+RUN apt update && apt install -y \
+    software-properties-common \
+    git \
+    wget \
+    gcc \
+    pip \
+    clangd-13 \
+    cppcheck \
+    global \
+    libcanberra-gtk-module \
+    libcanberra-gtk3-module \
+    python3 \
+    python3-pip \
+    python3-venv \
+    emacs \
+    x11-apps
+
+# Install Go
+RUN apt install -y golang
+
+# Install Node.js
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt install -y nodejs
+
+# Install Poetry for Python dependency management
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
+# Install Adobe Source Code Pro font
+RUN wget --content-disposition -P /usr/local/share/fonts/opentype/source-code-pro https://github.com/adobe-fonts/source-code-pro/blob/29fdb884c6e9dc2a312f4a5e2bb3b2dad2350777/OTF/SourceCodePro-Regular.otf?raw=true && fc-cache -fv
+
+# Install Python LSP server
+RUN pip install python-lsp-server
+
+ARG USERNAME
+
+# Configure user for X11 forwarding
+RUN if getent passwd $USERNAME > /dev/null 2>&1; then \
+    echo "User $USERNAME exists"; \
+    else \
+    useradd -ms /bin/bash $USERNAME; \
+    fi
+
+USER $USERNAME
+WORKDIR /home/$USERNAME
+
+# Clone and configure Spacemacs
+RUN git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+
+# Get configurations
+RUN git clone https://github.com/tboquet/configs.git ~/configs && \
+    cp ~/configs/.spacemacs ~/.spacemacs
+
+
+
+# Install Spacemacs packages
+RUN emacs -nw -batch -u $USERNAME -q -kill
+
+# Configure git environment
+RUN git config --global user.name tboquet && git config --global user.email tom.boquet@gmail.com
+
+# Expose DISPLAY for X11 forwarding
+ENV DISPLAY=host.docker.internal:2
+
+# Set up the entry point
+# ENTRYPOINT ["emacs"]
